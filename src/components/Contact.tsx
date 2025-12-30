@@ -27,6 +27,7 @@ export default function Contact() {
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', service: '', message: '' });
     const [sending, setSending] = useState(false);
     const [contactInfo, setContactInfo] = useState<ContactInfo[]>(fallbackContactInfo);
+    const [mapsUrl, setMapsUrl] = useState('');
 
     useEffect(() => {
         const fetchSettings = async () => {
@@ -42,6 +43,9 @@ export default function Contact() {
                         { icon: '🕐', title: 'Horário', value: data.business_hours || 'Seg - Sex: 8h às 18h' },
                     ];
                     setContactInfo(updatedInfo);
+                    if (data.maps_embed_url) {
+                        setMapsUrl(data.maps_embed_url);
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao buscar configurações:', error);
@@ -96,13 +100,54 @@ export default function Contact() {
                         <div className="mb-6"><label className="block text-sm font-semibold text-gray-700 mb-2">Mensagem</label><textarea value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="Como podemos ajudar?" rows={4} className="w-full px-5 py-3.5 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#29577E] transition-all resize-y min-h-28" /></div>
                         <button type="submit" disabled={sending} style={{ width: '100%', padding: '1rem', fontSize: '1rem', fontWeight: 600, borderRadius: '9999px', background: sending ? '#9ca3af' : 'linear-gradient(to right, #FC4C00, #FF7033)', color: 'white', border: 'none', cursor: sending ? 'not-allowed' : 'pointer', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>{sending ? 'Enviando...' : 'Enviar Mensagem'}</button>
                     </form>
+
+                    {/* Cards de contato e Mapa */}
                     <div className="space-y-5">
-                        {contactInfo.map((c, i) => (
-                            <div key={i} style={{ padding: '2rem', backgroundColor: 'white', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} className="hover:translate-y-[-4px] hover:shadow-lg transition-all">
-                                <div style={{ width: '3.5rem', height: '3.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to bottom right, #29577E, #2a5a8c)', color: 'white', borderRadius: '0.75rem', marginBottom: '1rem', fontSize: '1.5rem' }}>{c.icon}</div>
-                                <h4 style={{ fontSize: '1.125rem', fontWeight: 600, color: '#29577E', marginBottom: '0.25rem' }}>{c.title}</h4><p style={{ fontSize: '1rem', color: '#6b7280' }}>{c.value}</p>
-                            </div>
-                        ))}
+                        {/* Cards de contato em grid 2x2 */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                            {contactInfo.map((c, i) => (
+                                <div key={i} style={{ padding: '1.25rem', backgroundColor: 'white', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} className="hover:translate-y-[-4px] hover:shadow-lg transition-all">
+                                    <div style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to bottom right, #29577E, #2a5a8c)', color: 'white', borderRadius: '0.5rem', marginBottom: '0.75rem', fontSize: '1.25rem' }}>{c.icon}</div>
+                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#29577E', marginBottom: '0.25rem' }}>{c.title}</h4>
+                                    <p style={{ fontSize: '0.85rem', color: '#6b7280', lineHeight: 1.4 }}>{c.value}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Mapa do Google */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '1rem',
+                            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                            overflow: 'hidden',
+                            height: '250px'
+                        }}>
+                            {mapsUrl ? (
+                                <iframe
+                                    src={mapsUrl}
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Localização no Google Maps"
+                                />
+                            ) : (
+                                <div style={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
+                                    flexDirection: 'column',
+                                    gap: '0.5rem'
+                                }}>
+                                    <span style={{ fontSize: '2rem' }}>🗺️</span>
+                                    <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Mapa em breve</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

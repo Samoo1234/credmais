@@ -12,6 +12,7 @@ interface Settings {
     facebook_url: string;
     instagram_url: string;
     linkedin_url: string;
+    maps_embed_url: string;
 }
 
 export default function SettingsPage() {
@@ -23,7 +24,8 @@ export default function SettingsPage() {
         business_hours: '',
         facebook_url: '',
         instagram_url: '',
-        linkedin_url: ''
+        linkedin_url: '',
+        maps_embed_url: ''
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -46,7 +48,8 @@ export default function SettingsPage() {
                 business_hours: data.business_hours || '',
                 facebook_url: data.facebook_url || '',
                 instagram_url: data.instagram_url || '',
-                linkedin_url: data.linkedin_url || ''
+                linkedin_url: data.linkedin_url || '',
+                maps_embed_url: data.maps_embed_url || ''
             });
         }
         setLoading(false);
@@ -183,6 +186,24 @@ export default function SettingsPage() {
                                 placeholder="Seg - Sex: 8h às 18h"
                                 style={inputStyle}
                             />
+                        </div>
+
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={labelStyle}>
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    🗺️ Google Maps (URL do Embed)
+                                </span>
+                            </label>
+                            <input
+                                type="url"
+                                value={settings.maps_embed_url}
+                                onChange={(e) => setSettings({ ...settings, maps_embed_url: e.target.value })}
+                                placeholder="https://www.google.com/maps/embed?pb=..."
+                                style={inputStyle}
+                            />
+                            <p style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                                Para obter: Google Maps → Compartilhar → Incorporar um mapa → Copiar src do iframe
+                            </p>
                         </div>
 
                         {/* Seção Redes Sociais */}
