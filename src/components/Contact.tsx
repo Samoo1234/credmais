@@ -89,8 +89,10 @@ export default function Contact() {
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#29577E] mb-4">Fale Conosco</h2>
                     <p className="text-lg lg:text-xl text-gray-500">Estamos prontos para atender você. Entre em contato e tire suas dúvidas.</p>
                 </div>
-                <div className="contact-grid">
-                    <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white p-10 lg:p-12 rounded-2xl shadow-lg">
+
+                {/* Formulário centralizado */}
+                <div style={{ maxWidth: '800px', margin: '0 auto 3rem' }}>
+                    <form onSubmit={handleSubmit} className="bg-white p-10 lg:p-12 rounded-2xl shadow-lg">
                         <div className="mb-6"><label className="block text-sm font-semibold text-gray-700 mb-2">Nome Completo</label><input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Seu nome" className="w-full px-5 py-3.5 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#29577E] transition-all" /></div>
                         <div className="form-row mb-6">
                             <div><label className="block text-sm font-semibold text-gray-700 mb-2">E-mail</label><input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="seu@email.com" className="w-full px-5 py-3.5 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#29577E] transition-all" /></div>
@@ -100,59 +102,55 @@ export default function Contact() {
                         <div className="mb-6"><label className="block text-sm font-semibold text-gray-700 mb-2">Mensagem</label><textarea value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="Como podemos ajudar?" rows={4} className="w-full px-5 py-3.5 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#29577E] transition-all resize-y min-h-28" /></div>
                         <button type="submit" disabled={sending} style={{ width: '100%', padding: '1rem', fontSize: '1rem', fontWeight: 600, borderRadius: '9999px', background: sending ? '#9ca3af' : 'linear-gradient(to right, #FC4C00, #FF7033)', color: 'white', border: 'none', cursor: sending ? 'not-allowed' : 'pointer', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>{sending ? 'Enviando...' : 'Enviar Mensagem'}</button>
                     </form>
+                </div>
 
-                    {/* Cards de contato e Mapa lado a lado */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                        {/* Cards de contato empilhados */}
-                        <div className="space-y-4">
-                            {contactInfo.map((c, i) => (
-                                <div key={i} style={{ padding: '1.25rem', backgroundColor: 'white', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} className="hover:translate-y-[-2px] hover:shadow-lg transition-all">
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                        <div style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to bottom right, #29577E, #2a5a8c)', color: 'white', borderRadius: '0.5rem', fontSize: '1.25rem', flexShrink: 0 }}>{c.icon}</div>
-                                        <div>
-                                            <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#29577E', marginBottom: '0.15rem' }}>{c.title}</h4>
-                                            <p style={{ fontSize: '0.85rem', color: '#6b7280', lineHeight: 1.4 }}>{c.value}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                {/* Cards de contato 50% + Mapa 50% */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+                    {/* Cards de contato */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                        {contactInfo.map((c, i) => (
+                            <div key={i} style={{ padding: '1.5rem', backgroundColor: 'white', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} className="hover:translate-y-[-4px] hover:shadow-lg transition-all">
+                                <div style={{ width: '3rem', height: '3rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to bottom right, #29577E, #2a5a8c)', color: 'white', borderRadius: '0.75rem', marginBottom: '1rem', fontSize: '1.25rem' }}>{c.icon}</div>
+                                <h4 style={{ fontSize: '1rem', fontWeight: 600, color: '#29577E', marginBottom: '0.25rem' }}>{c.title}</h4>
+                                <p style={{ fontSize: '0.9rem', color: '#6b7280', lineHeight: 1.4 }}>{c.value}</p>
+                            </div>
+                        ))}
+                    </div>
 
-                        {/* Mapa do Google */}
-                        <div style={{
-                            backgroundColor: 'white',
-                            borderRadius: '1rem',
-                            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-                            overflow: 'hidden',
-                            minHeight: '350px'
-                        }}>
-                            {mapsUrl ? (
-                                <iframe
-                                    src={mapsUrl}
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0, minHeight: '350px' }}
-                                    allowFullScreen
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    title="Localização no Google Maps"
-                                />
-                            ) : (
-                                <div style={{
-                                    height: '100%',
-                                    minHeight: '350px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
-                                    flexDirection: 'column',
-                                    gap: '0.5rem'
-                                }}>
-                                    <span style={{ fontSize: '3rem' }}>🗺️</span>
-                                    <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Mapa em breve</p>
-                                </div>
-                            )}
-                        </div>
+                    {/* Mapa do Google */}
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '1rem',
+                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                        overflow: 'hidden',
+                        minHeight: '300px'
+                    }}>
+                        {mapsUrl ? (
+                            <iframe
+                                src={mapsUrl}
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0, minHeight: '300px' }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                title="Localização no Google Maps"
+                            />
+                        ) : (
+                            <div style={{
+                                height: '100%',
+                                minHeight: '300px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
+                                flexDirection: 'column',
+                                gap: '0.5rem'
+                            }}>
+                                <span style={{ fontSize: '3rem' }}>🗺️</span>
+                                <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Mapa em breve</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
