@@ -90,8 +90,8 @@ export default function Contact() {
                     <p className="text-lg lg:text-xl text-gray-500">Estamos prontos para atender você. Entre em contato e tire suas dúvidas.</p>
                 </div>
 
-                {/* Formulário centralizado */}
-                <div style={{ maxWidth: '800px', margin: '0 auto 3rem' }}>
+                {/* Formulário */}
+                <div style={{ marginBottom: '3rem' }}>
                     <form onSubmit={handleSubmit} className="bg-white p-10 lg:p-12 rounded-2xl shadow-lg">
                         <div className="mb-6"><label className="block text-sm font-semibold text-gray-700 mb-2">Nome Completo</label><input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Seu nome" className="w-full px-5 py-3.5 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#29577E] transition-all" /></div>
                         <div className="form-row mb-6">
