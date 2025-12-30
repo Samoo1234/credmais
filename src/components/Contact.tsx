@@ -101,15 +101,19 @@ export default function Contact() {
                         <button type="submit" disabled={sending} style={{ width: '100%', padding: '1rem', fontSize: '1rem', fontWeight: 600, borderRadius: '9999px', background: sending ? '#9ca3af' : 'linear-gradient(to right, #FC4C00, #FF7033)', color: 'white', border: 'none', cursor: sending ? 'not-allowed' : 'pointer', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>{sending ? 'Enviando...' : 'Enviar Mensagem'}</button>
                     </form>
 
-                    {/* Cards de contato e Mapa */}
-                    <div className="space-y-5">
-                        {/* Cards de contato em grid 2x2 */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                    {/* Cards de contato e Mapa lado a lado */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                        {/* Cards de contato empilhados */}
+                        <div className="space-y-4">
                             {contactInfo.map((c, i) => (
-                                <div key={i} style={{ padding: '1.25rem', backgroundColor: 'white', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} className="hover:translate-y-[-4px] hover:shadow-lg transition-all">
-                                    <div style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to bottom right, #29577E, #2a5a8c)', color: 'white', borderRadius: '0.5rem', marginBottom: '0.75rem', fontSize: '1.25rem' }}>{c.icon}</div>
-                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#29577E', marginBottom: '0.25rem' }}>{c.title}</h4>
-                                    <p style={{ fontSize: '0.85rem', color: '#6b7280', lineHeight: 1.4 }}>{c.value}</p>
+                                <div key={i} style={{ padding: '1.25rem', backgroundColor: 'white', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} className="hover:translate-y-[-2px] hover:shadow-lg transition-all">
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                        <div style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to bottom right, #29577E, #2a5a8c)', color: 'white', borderRadius: '0.5rem', fontSize: '1.25rem', flexShrink: 0 }}>{c.icon}</div>
+                                        <div>
+                                            <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#29577E', marginBottom: '0.15rem' }}>{c.title}</h4>
+                                            <p style={{ fontSize: '0.85rem', color: '#6b7280', lineHeight: 1.4 }}>{c.value}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -120,14 +124,14 @@ export default function Contact() {
                             borderRadius: '1rem',
                             boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
                             overflow: 'hidden',
-                            height: '250px'
+                            minHeight: '350px'
                         }}>
                             {mapsUrl ? (
                                 <iframe
                                     src={mapsUrl}
                                     width="100%"
                                     height="100%"
-                                    style={{ border: 0 }}
+                                    style={{ border: 0, minHeight: '350px' }}
                                     allowFullScreen
                                     loading="lazy"
                                     referrerPolicy="no-referrer-when-downgrade"
@@ -136,6 +140,7 @@ export default function Contact() {
                             ) : (
                                 <div style={{
                                     height: '100%',
+                                    minHeight: '350px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
@@ -143,7 +148,7 @@ export default function Contact() {
                                     flexDirection: 'column',
                                     gap: '0.5rem'
                                 }}>
-                                    <span style={{ fontSize: '2rem' }}>🗺️</span>
+                                    <span style={{ fontSize: '3rem' }}>🗺️</span>
                                     <p style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Mapa em breve</p>
                                 </div>
                             )}
