@@ -1,5 +1,6 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
+import { createBrowserClient } from '@/lib/supabase';
 
 const containerStyle = { maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.5rem', paddingRight: '1.5rem', width: '100%' };
 const serviceOptions = [
@@ -7,14 +8,49 @@ const serviceOptions = [
     { value: 'seguros-credito', label: 'Seguros e Crédito Empresarial' }, { value: 'limpa-nome', label: 'Limpa Nome' }, { value: 'usina-solar', label: 'Financiamentos e Usina Solar' },
     { value: 'veiculos', label: 'Financiamentos de Veículos' }, { value: 'cgi', label: 'Crédito com Garantia de Imóvel Rural' }, { value: 'consorcios', label: 'Financiamentos e Consórcios' },
 ];
-const contactInfo = [
-    { icon: '📞', title: 'Telefone', value: '(00) 0000-0000' }, { icon: '✉️', title: 'E-mail', value: 'contato@credmais.com.br' },
-    { icon: '📍', title: 'Endereço', value: 'Sua cidade, Estado' }, { icon: '🕐', title: 'Horário', value: 'Seg - Sex: 8h às 18h' },
+
+// Dados fallback
+const fallbackContactInfo = [
+    { icon: '📞', title: 'Telefone', value: '(00) 0000-0000' },
+    { icon: '✉️', title: 'E-mail', value: 'contato@credmais.com.br' },
+    { icon: '📍', title: 'Endereço', value: 'Sua cidade, Estado' },
+    { icon: '🕐', title: 'Horário', value: 'Seg - Sex: 8h às 18h' },
 ];
+
+interface ContactInfo {
+    icon: string;
+    title: string;
+    value: string;
+}
 
 export default function Contact() {
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', service: '', message: '' });
     const [sending, setSending] = useState(false);
+    const [contactInfo, setContactInfo] = useState<ContactInfo[]>(fallbackContactInfo);
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const supabase = createBrowserClient();
+                const { data } = await supabase.from('settings').select('*').single();
+
+                if (data) {
+                    const updatedInfo: ContactInfo[] = [
+                        { icon: '📞', title: 'Telefone', value: data.phone || '(00) 0000-0000' },
+                        { icon: '✉️', title: 'E-mail', value: data.contact_email || 'contato@credmais.com.br' },
+                        { icon: '📍', title: 'Endereço', value: data.address || 'Sua cidade, Estado' },
+                        { icon: '🕐', title: 'Horário', value: data.business_hours || 'Seg - Sex: 8h às 18h' },
+                    ];
+                    setContactInfo(updatedInfo);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar configurações:', error);
+            }
+        };
+
+        fetchSettings();
+    }, []);
+
     const formatPhone = (v: string) => { const n = v.replace(/\D/g, '').slice(0, 11); if (n.length > 6) return `(${n.slice(0, 2)}) ${n.slice(2, 7)}-${n.slice(7)}`; if (n.length > 2) return `(${n.slice(0, 2)}) ${n.slice(2)}`; return n.length > 0 ? `(${n}` : ''; };
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
