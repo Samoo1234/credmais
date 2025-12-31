@@ -104,10 +104,10 @@ export default function Contact() {
                     </form>
                 </div>
 
-                {/* Cards de contato 50% + Mapa 50% */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+                {/* Cards de contato 50% + Mapa 50% - Responsivo */}
+                <div className="contact-grid-container">
                     {/* Cards de contato */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                    <div className="contact-cards-grid">
                         {contactInfo.map((c, i) => (
                             <div key={i} style={{ padding: '1.5rem', backgroundColor: 'white', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} className="hover:translate-y-[-4px] hover:shadow-lg transition-all">
                                 <div style={{ width: '3rem', height: '3rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to bottom right, #29577E, #2a5a8c)', color: 'white', borderRadius: '0.75rem', marginBottom: '1rem', fontSize: '1.25rem' }}>{c.icon}</div>

@@ -40,42 +40,42 @@ export default function AdminDashboard() {
 
     return (
         <div>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1f2937', marginBottom: '2rem' }}>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1f2937', marginBottom: '1.5rem' }}>
                 Dashboard
             </h1>
 
             {loading ? (
                 <p>Carregando...</p>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+                <div className="admin-stats-grid">
                     {statCards.map((card) => (
                         <div
                             key={card.label}
                             style={{
                                 background: 'white',
                                 borderRadius: '1rem',
-                                padding: '1.5rem',
+                                padding: '1.25rem',
                                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                                 borderLeft: `4px solid ${card.color}`
                             }}
                         >
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div>
-                                    <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '0.25rem' }}>{card.label}</p>
-                                    <p style={{ fontSize: '2rem', fontWeight: 700, color: card.color }}>{card.value}</p>
+                                    <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '0.25rem' }}>{card.label}</p>
+                                    <p style={{ fontSize: '1.75rem', fontWeight: 700, color: card.color }}>{card.value}</p>
                                 </div>
-                                <span style={{ fontSize: '2rem' }}>{card.icon}</span>
+                                <span style={{ fontSize: '1.75rem' }}>{card.icon}</span>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
 
-            <div style={{ marginTop: '2rem', background: 'white', borderRadius: '1rem', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1f2937', marginBottom: '1rem' }}>
+            <div style={{ marginTop: '2rem', background: 'white', borderRadius: '1rem', padding: '1.25rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                <h2 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#1f2937', marginBottom: '0.75rem' }}>
                     Bem-vindo ao Painel Administrativo
                 </h2>
-                <p style={{ color: '#6b7280' }}>
+                <p style={{ color: '#6b7280', fontSize: '0.95rem', lineHeight: 1.6 }}>
                     Aqui você pode gerenciar os leads recebidos pelo formulário de contato e configurar as informações do site como número do WhatsApp e e-mail de contato.
                 </p>
             </div>

@@ -124,7 +124,7 @@ export default function SettingsPage() {
                             📱 Contato Principal
                         </h3>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
+                        <div className="admin-settings-grid" style={{ display: 'grid', gap: '1rem', marginBottom: '1.5rem' }}>
                             <div>
                                 <label style={labelStyle}>Número do WhatsApp</label>
                                 <input

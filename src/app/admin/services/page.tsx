@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createBrowserClient } from '@/lib/supabase';
 
 interface Service {
     id: string;
@@ -125,25 +124,28 @@ export default function ServicesPage() {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1f2937' }}>
-                    Serviços
-                </h1>
-                <button
-                    onClick={openNewModal}
-                    style={{
-                        padding: '0.75rem 1.5rem',
-                        background: 'linear-gradient(to right, #FC4C00, #FF7033)',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '0.5rem',
-                        fontSize: '0.95rem',
-                        fontWeight: 600,
-                        cursor: 'pointer'
-                    }}
-                >
-                    + Novo Serviço
-                </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                    <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1f2937' }}>
+                        Serviços
+                    </h1>
+                    <button
+                        onClick={openNewModal}
+                        style={{
+                            padding: '0.625rem 1.25rem',
+                            background: 'linear-gradient(to right, #FC4C00, #FF7033)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '0.5rem',
+                            fontSize: '0.9rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap'
+                        }}
+                    >
+                        + Novo Serviço
+                    </button>
+                </div>
             </div>
 
             {message && (
@@ -162,33 +164,33 @@ export default function ServicesPage() {
             {loading ? (
                 <p>Carregando...</p>
             ) : services.length === 0 ? (
-                <div style={{ background: 'white', borderRadius: '1rem', padding: '3rem', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                <div style={{ background: 'white', borderRadius: '1rem', padding: '2rem', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
                     <p style={{ color: '#6b7280', marginBottom: '1rem' }}>Nenhum serviço cadastrado ainda.</p>
                     <p style={{ color: '#9ca3af', fontSize: '0.9rem' }}>
                         Execute o script SQL no Supabase para criar a tabela e inserir os dados iniciais.
                     </p>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                <div className="admin-services-grid">
                     {services.map((service) => (
                         <div
                             key={service.id}
                             style={{
                                 background: 'white',
                                 borderRadius: '1rem',
-                                padding: '1.5rem',
+                                padding: '1.25rem',
                                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                                 opacity: service.active ? 1 : 0.6,
                                 borderLeft: `4px solid ${service.active ? '#29577E' : '#9ca3af'}`
                             }}
                         >
-                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                                <span style={{ fontSize: '2rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                                <span style={{ fontSize: '1.75rem' }}>
                                     {iconOptions.find(i => i.value === service.icon)?.emoji || '📦'}
                                 </span>
                                 <span style={{
-                                    fontSize: '0.75rem',
-                                    padding: '0.25rem 0.5rem',
+                                    fontSize: '0.7rem',
+                                    padding: '0.2rem 0.5rem',
                                     borderRadius: '9999px',
                                     background: service.active ? '#d1fae5' : '#fee2e2',
                                     color: service.active ? '#065f46' : '#dc2626'
@@ -196,11 +198,11 @@ export default function ServicesPage() {
                                     {service.active ? 'Ativo' : 'Inativo'}
                                 </span>
                             </div>
-                            <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#1f2937', marginBottom: '0.5rem' }}>
+                            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#1f2937', marginBottom: '0.4rem' }}>
                                 {service.title}
                             </h3>
-                            <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem', lineHeight: 1.5 }}>
-                                {service.description.substring(0, 100)}{service.description.length > 100 ? '...' : ''}
+                            <p style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '1rem', lineHeight: 1.4 }}>
+                                {service.description.substring(0, 80)}{service.description.length > 80 ? '...' : ''}
                             </p>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
                                 <button
@@ -212,7 +214,7 @@ export default function ServicesPage() {
                                         color: 'white',
                                         border: 'none',
                                         borderRadius: '0.375rem',
-                                        fontSize: '0.875rem',
+                                        fontSize: '0.8rem',
                                         cursor: 'pointer'
                                     }}
                                 >
@@ -221,12 +223,12 @@ export default function ServicesPage() {
                                 <button
                                     onClick={() => handleDelete(service.id)}
                                     style={{
-                                        padding: '0.5rem 1rem',
+                                        padding: '0.5rem 0.75rem',
                                         background: '#fee2e2',
                                         color: '#dc2626',
                                         border: 'none',
                                         borderRadius: '0.375rem',
-                                        fontSize: '0.875rem',
+                                        fontSize: '0.8rem',
                                         cursor: 'pointer'
                                     }}
                                 >
@@ -247,22 +249,19 @@ export default function ServicesPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    zIndex: 1000
+                    zIndex: 1000,
+                    padding: '1rem'
                 }}>
-                    <div style={{
+                    <div className="admin-modal-content" style={{
                         background: 'white',
                         borderRadius: '1rem',
-                        padding: '2rem',
-                        width: '100%',
-                        maxWidth: '500px',
-                        maxHeight: '90vh',
-                        overflow: 'auto'
+                        padding: '1.5rem'
                     }}>
-                        <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1f2937', marginBottom: '1.5rem' }}>
+                        <h2 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#1f2937', marginBottom: '1.25rem' }}>
                             {editingService.id ? 'Editar Serviço' : 'Novo Serviço'}
                         </h2>
 
-                        <div style={{ marginBottom: '1.25rem' }}>
+                        <div style={{ marginBottom: '1rem' }}>
                             <label style={labelStyle}>Título</label>
                             <input
                                 type="text"
@@ -273,47 +272,47 @@ export default function ServicesPage() {
                             />
                         </div>
 
-                        <div style={{ marginBottom: '1.25rem' }}>
+                        <div style={{ marginBottom: '1rem' }}>
                             <label style={labelStyle}>Descrição</label>
                             <textarea
                                 value={editingService.description}
                                 onChange={(e) => setEditingService({ ...editingService, description: e.target.value })}
                                 placeholder="Descrição do serviço"
-                                rows={4}
+                                rows={3}
                                 style={{ ...inputStyle, resize: 'vertical' }}
                             />
                         </div>
 
-                        <div style={{ marginBottom: '1.25rem' }}>
+                        <div style={{ marginBottom: '1rem' }}>
                             <label style={labelStyle}>Ícone</label>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem' }}>
                                 {iconOptions.map((icon) => (
                                     <button
                                         key={icon.value}
                                         type="button"
                                         onClick={() => setEditingService({ ...editingService, icon: icon.value })}
                                         style={{
-                                            padding: '0.75rem',
+                                            padding: '0.5rem',
                                             border: `2px solid ${editingService.icon === icon.value ? '#29577E' : '#e5e7eb'}`,
                                             borderRadius: '0.5rem',
                                             background: editingService.icon === icon.value ? '#eef5ff' : 'white',
                                             cursor: 'pointer',
-                                            fontSize: '1.5rem',
+                                            fontSize: '1.25rem',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             alignItems: 'center',
-                                            gap: '0.25rem'
+                                            gap: '0.15rem'
                                         }}
                                         title={icon.label}
                                     >
                                         {icon.emoji}
-                                        <span style={{ fontSize: '0.6rem', color: '#6b7280' }}>{icon.label.split(' ')[0]}</span>
+                                        <span style={{ fontSize: '0.55rem', color: '#6b7280' }}>{icon.label.split(' ')[0]}</span>
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        <div style={{ marginBottom: '1.25rem' }}>
+                        <div style={{ marginBottom: '1rem' }}>
                             <label style={labelStyle}>Ordem</label>
                             <input
                                 type="number"
@@ -323,29 +322,29 @@ export default function ServicesPage() {
                             />
                         </div>
 
-                        <div style={{ marginBottom: '1.5rem' }}>
+                        <div style={{ marginBottom: '1.25rem' }}>
                             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
                                 <input
                                     type="checkbox"
                                     checked={editingService.active}
                                     onChange={(e) => setEditingService({ ...editingService, active: e.target.checked })}
-                                    style={{ width: '1.25rem', height: '1.25rem' }}
+                                    style={{ width: '1.15rem', height: '1.15rem' }}
                                 />
-                                <span style={{ fontSize: '0.95rem', color: '#374151' }}>Serviço ativo</span>
+                                <span style={{ fontSize: '0.9rem', color: '#374151' }}>Serviço ativo</span>
                             </label>
                         </div>
 
-                        <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div style={{ display: 'flex', gap: '0.75rem' }}>
                             <button
                                 onClick={() => { setShowModal(false); setEditingService(null); }}
                                 style={{
                                     flex: 1,
-                                    padding: '0.875rem',
+                                    padding: '0.75rem',
                                     background: '#f3f4f6',
                                     color: '#374151',
                                     border: 'none',
                                     borderRadius: '0.5rem',
-                                    fontSize: '1rem',
+                                    fontSize: '0.95rem',
                                     cursor: 'pointer'
                                 }}
                             >
@@ -356,12 +355,12 @@ export default function ServicesPage() {
                                 disabled={saving || !editingService.title || !editingService.description}
                                 style={{
                                     flex: 1,
-                                    padding: '0.875rem',
+                                    padding: '0.75rem',
                                     background: saving ? '#9ca3af' : 'linear-gradient(to right, #FC4C00, #FF7033)',
                                     color: 'white',
                                     border: 'none',
                                     borderRadius: '0.5rem',
-                                    fontSize: '1rem',
+                                    fontSize: '0.95rem',
                                     fontWeight: 600,
                                     cursor: saving ? 'not-allowed' : 'pointer'
                                 }}

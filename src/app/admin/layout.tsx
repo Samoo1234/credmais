@@ -7,6 +7,7 @@ import { createBrowserClient } from '@/lib/supabase';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<{ email?: string } | null>(null);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -16,6 +17,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             setUser(user);
         });
     }, []);
+
+    // Fechar sidebar quando a rota muda (mobile)
+    useEffect(() => {
+        setSidebarOpen(false);
+    }, [pathname]);
 
     const handleLogout = async () => {
         const supabase = createBrowserClient();
@@ -32,15 +38,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     ];
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', background: '#f3f4f6' }}>
+        <div className="admin-layout">
+            {/* Botão Toggle Mobile */}
+            <button
+                className="admin-toggle-btn"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                aria-label="Menu"
+            >
+                {sidebarOpen ? '✕' : '☰'}
+            </button>
+
+            {/* Overlay para fechar sidebar mobile */}
+            <div
+                className={`admin-overlay ${sidebarOpen ? 'admin-overlay-visible' : ''}`}
+                onClick={() => setSidebarOpen(false)}
+            />
+
             {/* Sidebar */}
-            <aside style={{
-                width: '250px',
-                background: 'linear-gradient(180deg, #29577E 0%, #0f2438 100%)',
-                padding: '1.5rem',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
+            <aside className={`admin-sidebar ${sidebarOpen ? 'admin-sidebar-visible' : ''}`}>
                 <div style={{
                     fontSize: '1.25rem',
                     fontWeight: 700,
@@ -78,7 +93,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </nav>
 
                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>
-                    <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>
+                    <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginBottom: '0.5rem', wordBreak: 'break-all' }}>
                         {user?.email}
                     </div>
                     <button
@@ -100,7 +115,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main Content */}
-            <main style={{ flex: 1, padding: '2rem' }}>
+            <main className="admin-main">
                 {children}
             </main>
         </div>
