@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import LogoCliente from '@/assets/sem fundo.png';
+import EngrImage from '@/assets/engr.png';
 
 const containerStyle = {
     maxWidth: '1280px',
@@ -32,12 +33,31 @@ export default function Hero() {
                         right: '8%'
                     }}
                 />
-                <div
-                    className="absolute w-[150px] lg:w-[200px] aspect-square bg-[#FF7033] opacity-30 animate-rotate"
+                <Image
+                    src={EngrImage}
+                    alt="Engrenagem decorativa"
+                    className="absolute w-[150px] lg:w-[200px] opacity-30 animate-rotate"
                     style={{
-                        clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
                         bottom: '25%',
                         left: '3%'
+                    }}
+                />
+                <Image
+                    src={EngrImage}
+                    alt="Engrenagem decorativa"
+                    className="absolute w-[80px] lg:w-[100px] opacity-20 animate-rotate"
+                    style={{
+                        top: '12%',
+                        right: '15%'
+                    }}
+                />
+                <Image
+                    src={EngrImage}
+                    alt="Engrenagem decorativa"
+                    className="absolute w-[100px] lg:w-[130px] opacity-25 animate-rotate"
+                    style={{
+                        top: '40%',
+                        left: '47%'
                     }}
                 />
             </div>
