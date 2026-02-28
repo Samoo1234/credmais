@@ -460,3 +460,124 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ========================================
+   ESTILOS DO POP-UP DE PROMOÇÕES
+   ======================================== */
+
+/* Overlay */
+.promo-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  animation: promoFadeIn 0.4s ease;
+  padding: 1rem;
+}
+
+.promo-popup-overlay.promo-popup-closing {
+  animation: promoFadeOut 0.4s ease forwards;
+}
+
+/* Container */
+.promo-popup-container {
+  position: relative;
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  animation: promoScaleIn 0.4s ease;
+  background: #000;
+}
+
+.promo-popup-container.promo-popup-container-closing {
+  animation: promoScaleOut 0.4s ease forwards;
+}
+
+/* Progress bar track */
+.promo-popup-progress-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 10;
+}
+
+/* Progress bar fill */
+.promo-popup-progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #FC4C00, #FF7033);
+  transition: width 1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Timer text */
+.promo-popup-timer {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
+}
+
+/* Image */
+.promo-popup-image {
+  display: block;
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Link wrapper */
+.promo-popup-link {
+  display: block;
+  cursor: pointer;
+}
+
+/* Animations */
+@keyframes promoFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes promoFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes promoScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes promoScaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}

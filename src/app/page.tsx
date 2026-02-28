@@ -1,4 +1,4 @@
-import { Header, Hero, Services, About, CTA, Contact, Footer, WhatsAppButton } from '@/components';
+import { Header, Hero, Services, About, CTA, Contact, Footer, WhatsAppButton, PromotionPopup } from '@/components';
 
 export default function Home() {
   return (
@@ -13,6 +13,7 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <PromotionPopup />
     </>
   );
 }

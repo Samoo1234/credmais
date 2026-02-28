@@ -6,3 +6,4 @@ export { default as CTA } from './CTA';
 export { default as Contact } from './Contact';
 export { default as Footer } from './Footer';
 export { default as WhatsAppButton } from './WhatsAppButton';
+export { default as PromotionPopup } from './PromotionPopup';
