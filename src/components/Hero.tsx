@@ -1,7 +1,15 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LogoCliente from '@/assets/sem fundo.png';
 import EngrImage from '@/assets/engr.png';
+
+interface HeroMedia {
+    media_url: string;
+    media_type: 'image' | 'video';
+}
 
 const containerStyle = {
     maxWidth: '1280px',
@@ -13,66 +21,53 @@ const containerStyle = {
 };
 
 export default function Hero() {
+    const [media, setMedia] = useState<HeroMedia | null>(null);
+
+    useEffect(() => {
+        const fetchMedia = async () => {
+            try {
+                const res = await fetch('/api/hero');
+                const data = await res.json();
+                if (data && data.media_url) {
+                    setMedia(data);
+                }
+            } catch (err) {
+                console.error('Erro ao buscar hero media:', err);
+            }
+        };
+
+        fetchMedia();
+    }, []);
+
+    const defaultMediaUrl = "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80";
+
     return (
         <section id="inicio" className="relative min-h-screen flex items-center justify-center bg-[#0f2438] overflow-hidden pt-20 w-full">
-            {/* Background HD Media Placeholder */}
+            {/* Background HD Media */}
             <div className="absolute inset-0 z-0">
-                <img 
-                    src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80"
-                    alt="Background Corporativo"
-                    className="object-cover w-full h-full animate-pulse transition-opacity duration-1000 opacity-60"
-                />
-                {/* Overlay gradiente para garantir legibilidade impecável dos textos */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0f2438]/90 via-[#0f2438]/70 to-[#29577E]/40"></div>
-                <div className="absolute inset-0 bg-black/20 mix-blend-overlay"></div>
+                {media?.media_type === 'video' ? (
+                    <video
+                        src={media.media_url}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        className="object-cover w-full h-full transform-gpu will-change-transform transition-opacity duration-1000"
+                        style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}
+                    />
+                ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img 
+                        src={media?.media_url || defaultMediaUrl}
+                        alt="Background Corporativo"
+                        className={`object-cover w-full h-full transition-opacity duration-1000 ${!media ? 'animate-pulse' : ''}`}
+                    />
+                )}
+                {/* Removidas as camadas escuras para manter o vídeo 100% claro */}
             </div>
 
-            {/* Decorative Shapes */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div
-                    className="absolute w-[350px] lg:w-[450px] aspect-square bg-[#FC4C00] opacity-90 animate-float"
-                    style={{
-                        clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
-                        bottom: '-80px',
-                        right: '-30px'
-                    }}
-                />
-                <div
-                    className="absolute w-[250px] lg:w-[350px] aspect-square bg-[#2a5a8c] opacity-50 animate-float-reverse"
-                    style={{
-                        clipPath: 'polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%)',
-                        top: '15%',
-                        right: '8%'
-                    }}
-                />
-                <Image
-                    src={EngrImage}
-                    alt="Engrenagem decorativa"
-                    className="absolute w-[150px] lg:w-[200px] opacity-30 animate-rotate"
-                    style={{
-                        bottom: '25%',
-                        left: '3%'
-                    }}
-                />
-                <Image
-                    src={EngrImage}
-                    alt="Engrenagem decorativa"
-                    className="absolute w-[80px] lg:w-[100px] opacity-20 animate-rotate"
-                    style={{
-                        top: '12%',
-                        right: '15%'
-                    }}
-                />
-                <Image
-                    src={EngrImage}
-                    alt="Engrenagem decorativa"
-                    className="absolute w-[100px] lg:w-[130px] opacity-25 animate-rotate"
-                    style={{
-                        top: '40%',
-                        left: '47%'
-                    }}
-                />
-            </div>
+            {/* Formas geométricas removidas a pedido do usuário para focar no vídeo */}
 
             {/* Floating Hexagon - Logo Placeholder */}
             <div className="absolute right-[10%] top-1/2 -translate-y-1/2 z-10 hidden lg:flex items-center justify-center">
@@ -120,12 +115,12 @@ export default function Hero() {
 
             {/* Content - Centralizado */}
             <div style={containerStyle} className="relative z-10">
-                <div className="max-w-3xl mx-auto text-center lg:text-left lg:mx-0 lg:max-w-xl">
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.1] mb-6">
+                <div className="max-w-3xl mx-auto text-center lg:text-left lg:mx-0 lg:max-w-xl p-6 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10 lg:bg-transparent lg:backdrop-blur-none lg:border-none lg:p-0">
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.1] mb-6 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
                         Soluções Financeiras<br />
-                        <span className="text-[#FC4C00]">Para Realizar Seus Sonhos</span>
+                        <span className="text-[#FC4C00] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Para Realizar Seus Sonhos</span>
                     </h1>
-                    <p className="text-lg lg:text-xl text-white/85 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    <p className="text-lg lg:text-xl text-zinc-100 font-semibold mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                         Oferecemos as melhores opções de crédito e financiamento para você e sua empresa.
                         Conte com a Cred Mais para transformar seus projetos em realidade.
                     </p>
