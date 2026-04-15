@@ -25,7 +25,7 @@ export default function Header() {
     return (
         <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, backgroundColor: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(4px)', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
             <div style={{ maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '1rem', paddingBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: isMobile ? '2rem' : '4rem', paddingTop: '1rem', paddingBottom: '1rem' }}>
                     {/* Logo */}
                     <div style={{ flexShrink: 0 }}>
                         <Link href="#inicio">

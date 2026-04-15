@@ -14,7 +14,19 @@ const containerStyle = {
 
 export default function Hero() {
     return (
-        <section id="inicio" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#29577E] to-[#0f2438] overflow-hidden pt-20 w-full">
+        <section id="inicio" className="relative min-h-screen flex items-center justify-center bg-[#0f2438] overflow-hidden pt-20 w-full">
+            {/* Background HD Media Placeholder */}
+            <div className="absolute inset-0 z-0">
+                <img 
+                    src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80"
+                    alt="Background Corporativo"
+                    className="object-cover w-full h-full animate-pulse transition-opacity duration-1000 opacity-60"
+                />
+                {/* Overlay gradiente para garantir legibilidade impecável dos textos */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0f2438]/90 via-[#0f2438]/70 to-[#29577E]/40"></div>
+                <div className="absolute inset-0 bg-black/20 mix-blend-overlay"></div>
+            </div>
+
             {/* Decorative Shapes */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div
