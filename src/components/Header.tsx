@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import LogoAzul from '@/assets/1.png';
+import Logo from '@/assets/logo credmais.png';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +30,7 @@ export default function Header() {
                     <div style={{ flexShrink: 0 }}>
                         <Link href="#inicio">
                             <Image
-                                src={LogoAzul}
+                                src={Logo}
                                 alt="Cred Mais Logo"
                                 style={{ height: '5rem', width: 'auto' }}
                                 priority

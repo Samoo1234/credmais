@@ -134,7 +134,7 @@ export default function AdminHero() {
 
             if (!res.ok) throw new Error('Erro ao atualizar');
 
-            showMessage('success', !currentActive ? 'Mídia ativada para exibição!' : 'Mídia desativada!');
+            showMessage('success', !currentActive ? 'Mídia adicionada ao carrossel!' : 'Mídia removida do carrossel!');
             fetchMedia();
         } catch (err) {
             console.error(err);
@@ -160,10 +160,10 @@ export default function AdminHero() {
     return (
         <div>
             <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1f2937', marginBottom: '0.5rem' }}>
-                🎬 Gerenciar Fundo Inicial (Hero)
+                🎬 Gerenciar Carrossel (Hero)
             </h1>
             <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-                O arquivo ativo aparecerá no topo do site (seção Hero).
+                Os arquivos ativos serão exibidos como um carrossel no topo do site (seção Hero), alternando a cada 30 segundos.
             </p>
 
             {/* Aviso global sobre vídeos */}
@@ -294,7 +294,7 @@ export default function AdminHero() {
                         width: '100%'
                     }}
                 >
-                    {uploading ? 'Enviando (Isso pode demorar dependendo do tamanho)...' : '📤 Enviar e Ativar Fundo'}
+                    {uploading ? 'Enviando (Isso pode demorar dependendo do tamanho)...' : '📤 Enviar e Adicionar ao Carrossel'}
                 </button>
             </div>
 
@@ -380,7 +380,7 @@ export default function AdminHero() {
                                         color: item.is_active ? '#166534' : '#6b7280',
                                         marginBottom: '0.35rem',
                                     }}>
-                                        {item.is_active ? '✅ Sendo Exibido' : '⏸️ Inativo'}
+                                        {item.is_active ? '✅ No Carrossel' : '⏸️ Inativo'}
                                     </div>
                                     <p style={{ fontSize: '0.8rem', color: '#9ca3af' }}>
                                         Enviado em: {new Date(item.created_at).toLocaleDateString('pt-BR')} 
@@ -401,7 +401,7 @@ export default function AdminHero() {
                                             fontWeight: 500,
                                         }}
                                     >
-                                        {item.is_active ? '✅ Tela Inicial' : '▶️ Ativar Agora'}
+                                        {item.is_active ? '✅ No Carrossel' : '▶️ Adicionar'}
                                     </button>
                                     <button
                                         onClick={() => deleteMedia(item.id)}

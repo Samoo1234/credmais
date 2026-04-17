@@ -17,9 +17,9 @@ const stats = [
 export default function About() {
     return (
         <section id="sobre" className="py-20 lg:py-28 w-full">
-            <div style={containerStyle}>
+            <div style={{ ...containerStyle, paddingTop: '3rem' }}>
                 <div className="about-grid">
-                    <div>
+                    <div style={{ marginTop: '3rem' }}>
                         <span style={{ display: 'inline-block', padding: '0.5rem 1.5rem', background: 'linear-gradient(to right, #FC4C00, #FF7033)', color: 'white', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', borderRadius: '9999px', marginBottom: '1rem' }}>Sobre Nós</span>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#29577E] mb-6">Por que escolher a Cred Mais?</h2>
                         <p className="text-lg text-gray-600 leading-relaxed mb-8">Somos especialistas em soluções financeiras, oferecendo as melhores condições do mercado para você realizar seus sonhos. Nossa equipe está preparada para encontrar a melhor opção para o seu perfil.</p>

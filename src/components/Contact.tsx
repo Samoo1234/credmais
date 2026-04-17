@@ -83,8 +83,8 @@ export default function Contact() {
 
     return (
         <section id="contato" className="py-20 lg:py-28 bg-gray-50 w-full">
-            <div style={containerStyle}>
-                <div className="text-center max-w-2xl mx-auto mb-16">
+            <div style={{ ...containerStyle, paddingTop: '3rem' }}>
+                <div className="text-center max-w-2xl mx-auto mb-16" style={{ marginTop: '3rem' }}>
                     <span style={{ display: 'inline-block', padding: '0.5rem 1.5rem', background: 'linear-gradient(to right, #FC4C00, #FF7033)', color: 'white', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', borderRadius: '9999px', marginBottom: '1rem' }}>Contato</span>
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#29577E] mb-4">Fale Conosco</h2>
                     <p className="text-lg lg:text-xl text-gray-500">Estamos prontos para atender você. Entre em contato e tire suas dúvidas.</p>

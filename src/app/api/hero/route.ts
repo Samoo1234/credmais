@@ -13,9 +13,7 @@ export async function GET() {
             .from('hero_media')
             .select('*')
             .eq('is_active', true)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle();
+            .order('created_at', { ascending: true });
 
         if (error) throw error;
 
@@ -36,13 +34,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'URL da mídia e tipo são obrigatórios' }, { status: 400 });
         }
 
-        // Se ativando esta mídia, desativa todas as outras
-        if (is_active) {
-            await supabase
-                .from('hero_media')
-                .update({ is_active: false })
-                .eq('is_active', true);
-        }
+        // Nós não desativamos mais as outras mídias. Agora suportamos múltiplas no carrossel.
 
         const { data, error } = await supabase
             .from('hero_media')
@@ -73,13 +65,7 @@ export async function PUT(request: Request) {
             return NextResponse.json({ error: 'ID é obrigatório' }, { status: 400 });
         }
 
-        // Se ativando esta, desativa todas as outras
-        if (is_active) {
-            await supabase
-                .from('hero_media')
-                .update({ is_active: false })
-                .neq('id', id);
-        }
+        // Nós não desativamos mais as outras mídias. Agora suportamos múltiplas no carrossel.
 
         const { data, error } = await supabase
             .from('hero_media')
