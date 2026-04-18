@@ -4,7 +4,7 @@ const containerStyle = { maxWidth: '1280px', marginLeft: 'auto', marginRight: 'a
 
 export default function CTA() {
     return (
-        <section className="bg-gradient-to-r from-[#FC4C00] to-[#FF7033] py-20 lg:py-24 w-full">
+        <section className="bg-linear-to-r from-[#FC4C00] to-[#FF7033] py-20 lg:py-24 w-full">
             <div style={{ ...containerStyle, paddingTop: '3rem' }} className="text-center">
                 <h2 style={{ marginTop: '3rem' }} className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-5">Pronto para transformar seus sonhos em realidade?</h2>
                 <p className="text-lg lg:text-xl text-white/90 mb-8 max-w-2xl mx-auto">Entre em contato conosco e descubra a melhor solução financeira para você.</p>

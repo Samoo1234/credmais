@@ -26,7 +26,7 @@ export default function About() {
                         <div className="space-y-5">
                             {features.map((f, i) => (
                                 <div key={i} className="flex gap-4 items-start">
-                                    <div className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-[#FC4C00] to-[#FF7033] text-white font-bold rounded-full flex-shrink-0">✓</div>
+                                    <div className="w-9 h-9 flex items-center justify-center bg-linear-to-r from-[#FC4C00] to-[#FF7033] text-white font-bold rounded-full shrink-0">✓</div>
                                     <div><h4 className="text-lg font-semibold text-[#29577E] mb-1">{f.title}</h4><p className="text-base text-gray-500">{f.description}</p></div>
                                 </div>
                             ))}

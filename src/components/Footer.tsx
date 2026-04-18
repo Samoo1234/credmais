@@ -55,7 +55,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-[#0f2438] pt-16 pb-6 text-white w-full">
+        <footer className="bg-[#0f2438] pt-20 lg:pt-28 pb-8 text-white w-full">
             <div style={containerStyle}>
                 <div className="footer-grid pb-10 border-b border-white/10">
                     <div><div className="text-2xl font-extrabold text-[#FC4C00] mb-4">CRED MAIS</div><p className="text-sm text-white/70 leading-relaxed">Soluções financeiras completas para você e sua empresa. Realizando sonhos e transformando vidas.</p></div>
