@@ -32,13 +32,13 @@ export default function Hero() {
         fetchMedia();
     }, []);
 
-    // Effect to cycle through media every 30 seconds
+    // Effect to cycle through media every 5 seconds
     useEffect(() => {
         if (mediaList.length <= 1) return;
 
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % mediaList.length);
-        }, 30000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [mediaList.length]);
