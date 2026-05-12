@@ -166,10 +166,10 @@ export default function Header() {
                     top: '100%',
                     left: 0,
                     width: '100%',
-                    backgroundColor: 'rgba(255,255,255,0.60)',
+                    backgroundColor: 'rgba(41, 87, 126, 0.85)',
                     backdropFilter: 'blur(12px)',
-                    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
-                    borderTop: '1px solid rgba(0,0,0,0.05)',
+                    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1)',
+                    borderTop: '1px solid rgba(255,255,255,0.1)',
                     opacity: activeDropdown ? 1 : 0,
                     visibility: activeDropdown ? 'visible' : 'hidden',
                     transform: activeDropdown ? 'translateY(0)' : 'translateY(-15px)',
@@ -189,8 +189,8 @@ export default function Header() {
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
                         <div>
-                            <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1f2937', margin: 0 }}>Explorar Automóveis</h3>
-                            <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>Escolha a melhor solução para o seu veículo</p>
+                            <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'white', margin: 0 }}>Explorar Automóveis</h3>
+                            <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.5rem' }}>Escolha a melhor solução para o seu veículo</p>
                         </div>
                         <Link href="#todos-automoveis" style={{ color: '#FC4C00', fontWeight: 600, textDecoration: 'none' }}>
                             Ver tudo &rarr;
@@ -238,8 +238,8 @@ export default function Header() {
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
                         <div>
-                            <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1f2937', margin: 0 }}>Explorar Motocicletas</h3>
-                            <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>Encontre a moto ideal para seu estilo de vida</p>
+                            <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'white', margin: 0 }}>Explorar Motocicletas</h3>
+                            <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.5rem' }}>Encontre a moto ideal para seu estilo de vida</p>
                         </div>
                         <Link href="#todas-motos" style={{ color: '#FC4C00', fontWeight: 600, textDecoration: 'none' }}>
                             Ver tudo &rarr;
@@ -287,8 +287,8 @@ export default function Header() {
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
                         <div>
-                            <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1f2937', margin: 0 }}>Explorar Consórcios</h3>
-                            <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>Planeje seu futuro com as melhores opções</p>
+                            <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'white', margin: 0 }}>Explorar Consórcios</h3>
+                            <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.5rem' }}>Planeje seu futuro com as melhores opções</p>
                         </div>
                     </div>
                     
@@ -299,7 +299,7 @@ export default function Header() {
                             
                             return (
                                 <div key={category}>
-                                    <h4 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#374151', marginBottom: '1.5rem', textTransform: 'capitalize', textAlign: 'center' }}>
+                                    <h4 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'white', marginBottom: '1.5rem', textTransform: 'capitalize', textAlign: 'center' }}>
                                         {category === 'imoveis' ? 'Imóveis' : category}
                                     </h4>
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
