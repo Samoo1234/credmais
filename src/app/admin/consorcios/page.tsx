@@ -3,28 +3,34 @@
 import { useEffect, useState, useRef } from 'react';
 import { createBrowserClient } from '@/lib/supabase';
 
-interface VehicleCard {
+interface ConsorcioCard {
     id: string;
-    category: 'automoveis' | 'motocicletas';
+    category: 'carros' | 'motos' | 'imoveis';
     title: string;
     image_url: string;
     link_url: string;
     is_active: boolean;
     created_at: string;
+    installment_text: string | null;
+    installment_value: string | null;
+    installment_obs: string | null;
 }
 
-export default function AdminVehicleCards() {
-    const [cards, setCards] = useState<VehicleCard[]>([]);
+export default function AdminConsorcioCards() {
+    const [cards, setCards] = useState<ConsorcioCard[]>([]);
     const [loading, setLoading] = useState(true);
     
     // Form state
     const [showModal, setShowModal] = useState(false);
-    const [editingCard, setEditingCard] = useState<VehicleCard | null>(null);
+    const [editingCard, setEditingCard] = useState<ConsorcioCard | null>(null);
     const [formData, setFormData] = useState({
-        category: 'automoveis',
+        category: 'carros',
         title: '',
         link_url: '#',
-        is_active: true
+        is_active: true,
+        installment_text: '',
+        installment_value: '',
+        installment_obs: ''
     });
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -40,11 +46,14 @@ export default function AdminVehicleCards() {
     const fetchCards = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/vehicle-cards');
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setCards(data);
-            }
+            const supabase = createBrowserClient();
+            const { data, error } = await supabase
+                .from('consorcio_cards')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (error) throw error;
+            if (data) setCards(data);
         } catch (err) {
             console.error(err);
             showMessage('error', 'Erro ao carregar cards');
@@ -86,10 +95,10 @@ export default function AdminVehicleCards() {
             if (selectedFile) {
                 const supabase = createBrowserClient();
                 const ext = selectedFile.name.split('.').pop();
-                const fileName = `card_${Date.now()}.${ext}`;
+                const fileName = `consorcio_${Date.now()}.${ext}`;
                 
                 const { error: uploadError } = await supabase.storage
-                    .from('vehicle_cards')
+                    .from('consorcio_cards')
                     .upload(fileName, selectedFile, {
                         cacheControl: '3600',
                         upsert: false
@@ -98,7 +107,7 @@ export default function AdminVehicleCards() {
                 if (uploadError) throw uploadError;
 
                 const { data: urlData } = supabase.storage
-                    .from('vehicle_cards')
+                    .from('consorcio_cards')
                     .getPublicUrl(fileName);
 
                 finalImageUrl = urlData.publicUrl;
@@ -114,26 +123,31 @@ export default function AdminVehicleCards() {
             let err;
             if (editingCard) {
                 const { error } = await supabase
-                    .from('vehicle_cards')
+                    .from('consorcio_cards')
                     .update({
                         category: formData.category,
                         title: formData.title,
                         link_url: formData.link_url,
                         is_active: formData.is_active,
                         image_url: finalImageUrl,
-                        updated_at: new Date().toISOString()
+                        installment_text: formData.installment_text,
+                        installment_value: formData.installment_value,
+                        installment_obs: formData.installment_obs
                     })
                     .eq('id', editingCard.id);
                 err = error;
             } else {
                 const { error } = await supabase
-                    .from('vehicle_cards')
+                    .from('consorcio_cards')
                     .insert([{
                         category: formData.category,
                         title: formData.title,
                         link_url: formData.link_url,
                         is_active: formData.is_active,
-                        image_url: finalImageUrl
+                        image_url: finalImageUrl,
+                        installment_text: formData.installment_text,
+                        installment_value: formData.installment_value,
+                        installment_obs: formData.installment_obs
                     }]);
                 err = error;
             }
@@ -156,7 +170,7 @@ export default function AdminVehicleCards() {
         try {
             const supabase = createBrowserClient();
             const { error } = await supabase
-                .from('vehicle_cards')
+                .from('consorcio_cards')
                 .delete()
                 .eq('id', id);
 
@@ -170,11 +184,11 @@ export default function AdminVehicleCards() {
         }
     };
 
-    const toggleActive = async (card: VehicleCard) => {
+    const toggleActive = async (card: ConsorcioCard) => {
         try {
             const supabase = createBrowserClient();
             const { error } = await supabase
-                .from('vehicle_cards')
+                .from('consorcio_cards')
                 .update({ is_active: !card.is_active })
                 .eq('id', card.id);
 
@@ -186,23 +200,29 @@ export default function AdminVehicleCards() {
         }
     };
 
-    const openModal = (card?: VehicleCard) => {
+    const openModal = (card?: ConsorcioCard) => {
         if (card) {
             setEditingCard(card);
             setFormData({
                 category: card.category,
                 title: card.title,
                 link_url: card.link_url,
-                is_active: card.is_active
+                is_active: card.is_active,
+                installment_text: card.installment_text || '',
+                installment_value: card.installment_value || '',
+                installment_obs: card.installment_obs || ''
             });
             setPreviewUrl(card.image_url);
         } else {
             setEditingCard(null);
             setFormData({
-                category: 'automoveis',
+                category: 'carros',
                 title: '',
                 link_url: '#',
-                is_active: true
+                is_active: true,
+                installment_text: '',
+                installment_value: '',
+                installment_obs: ''
             });
             setPreviewUrl(null);
         }
@@ -222,10 +242,10 @@ export default function AdminVehicleCards() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <div>
                     <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1f2937', marginBottom: '0.5rem' }}>
-                        🚗 Gerenciar Cards de Veículos
+                        🏠 Gerenciar Cards de Consórcios
                     </h1>
                     <p style={{ color: '#6b7280', fontSize: '0.9rem' }}>
-                        Gerencie os cards que aparecem no Mega Menu em "Automóveis" e "Motocicletas".
+                        Gerencie os cards que aparecem no Mega Menu em "Consórcios".
                     </p>
                 </div>
                 <button
@@ -280,8 +300,8 @@ export default function AdminVehicleCards() {
                                     alt={card.title} 
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                                 />
-                                <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.7)', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                                    {card.category === 'automoveis' ? '🚗 Auto' : '🏍️ Moto'}
+                                <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.7)', color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'capitalize' }}>
+                                    {card.category}
                                 </div>
                             </div>
                             <div style={{ padding: '1rem' }}>
@@ -336,12 +356,13 @@ export default function AdminVehicleCards() {
                                 <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Categoria</label>
                                 <select 
                                     value={formData.category}
-                                    onChange={e => setFormData({...formData, category: e.target.value as 'automoveis' | 'motocicletas'})}
+                                    onChange={e => setFormData({...formData, category: e.target.value as 'carros' | 'motos' | 'imoveis'})}
                                     style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #d1d5db' }}
                                     required
                                 >
-                                    <option value="automoveis">Automóveis</option>
-                                    <option value="motocicletas">Motocicletas</option>
+                                    <option value="carros">Carros</option>
+                                    <option value="motos">Motos</option>
+                                    <option value="imoveis">Imóveis</option>
                                 </select>
                             </div>
 
@@ -352,7 +373,7 @@ export default function AdminVehicleCards() {
                                     value={formData.title}
                                     onChange={e => setFormData({...formData, title: e.target.value})}
                                     style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #d1d5db' }}
-                                    placeholder="Ex: SUV, Esportiva..."
+                                    placeholder="Ex: SUV, Casa..."
                                     required
                                 />
                             </div>
@@ -366,6 +387,40 @@ export default function AdminVehicleCards() {
                                     style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #d1d5db' }}
                                     placeholder="Ex: #suvs, /contato..."
                                     required
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem' }}>
+                                <div style={{ flex: 1 }}>
+                                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Texto Auxiliar</label>
+                                    <input 
+                                        type="text"
+                                        value={formData.installment_text}
+                                        onChange={e => setFormData({...formData, installment_text: e.target.value})}
+                                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #d1d5db' }}
+                                        placeholder="Ex: Parcelas a partir de"
+                                    />
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Valor da Parcela</label>
+                                    <input 
+                                        type="text"
+                                        value={formData.installment_value}
+                                        onChange={e => setFormData({...formData, installment_value: e.target.value})}
+                                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #d1d5db' }}
+                                        placeholder="Ex: R$ 247,12*"
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Observação Adicional</label>
+                                <input 
+                                    type="text"
+                                    value={formData.installment_obs}
+                                    onChange={e => setFormData({...formData, installment_obs: e.target.value})}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #d1d5db' }}
+                                    placeholder="Ex: com Seguro de Vida em Grupo"
                                 />
                             </div>
 

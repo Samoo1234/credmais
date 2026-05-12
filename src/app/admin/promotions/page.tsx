@@ -85,18 +85,16 @@ export default function AdminPromotions() {
                 .from('promotions')
                 .getPublicUrl(fileName);
 
-            // Create promotion record via API
-            const res = await fetch('/api/promotions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
+            // Create promotion record directly
+            const { error: insertError } = await supabase
+                .from('promotions')
+                .insert([{
                     image_url: urlData.publicUrl,
                     link_url: linkUrl || null,
                     is_active: true,
-                }),
-            });
+                }]);
 
-            if (!res.ok) throw new Error('Erro ao salvar promoção');
+            if (insertError) throw insertError;
 
             showMessage('success', 'Promoção criada com sucesso!');
             setSelectedFile(null);
@@ -113,13 +111,13 @@ export default function AdminPromotions() {
 
     const toggleActive = async (id: string, currentActive: boolean) => {
         try {
-            const res = await fetch('/api/promotions', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, is_active: !currentActive }),
-            });
+            const supabase = createBrowserClient();
+            const { error } = await supabase
+                .from('promotions')
+                .update({ is_active: !currentActive })
+                .eq('id', id);
 
-            if (!res.ok) throw new Error('Erro ao atualizar');
+            if (error) throw error;
 
             showMessage('success', !currentActive ? 'Promoção ativada!' : 'Promoção desativada!');
             fetchPromotions();
@@ -133,8 +131,13 @@ export default function AdminPromotions() {
         if (!confirm('Tem certeza que deseja excluir esta promoção?')) return;
 
         try {
-            const res = await fetch(`/api/promotions?id=${id}`, { method: 'DELETE' });
-            if (!res.ok) throw new Error('Erro ao excluir');
+            const supabase = createBrowserClient();
+            const { error } = await supabase
+                .from('promotions')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
 
             showMessage('success', 'Promoção excluída!');
             fetchPromotions();

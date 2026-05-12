@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { createBrowserClient } from '@/lib/supabase';
 
 interface Service {
     id: string;
@@ -36,9 +37,14 @@ export default function ServicesPage() {
 
     const fetchServices = async () => {
         try {
-            const response = await fetch('/api/services');
-            const data = await response.json();
-            setServices(data);
+            const supabase = createBrowserClient();
+            const { data, error } = await supabase
+                .from('services')
+                .select('*')
+                .order('order_index', { ascending: true });
+                
+            if (error) throw error;
+            setServices(data || []);
         } catch (error) {
             console.error('Erro ao buscar serviços:', error);
         }
@@ -51,23 +57,47 @@ export default function ServicesPage() {
         setMessage('');
 
         try {
-            const method = editingService.id ? 'PUT' : 'POST';
-            const response = await fetch('/api/services', {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(editingService)
-            });
+            const supabase = createBrowserClient();
+            let error;
+            
+            if (editingService.id) {
+                const { error: updateError } = await supabase
+                    .from('services')
+                    .update({
+                        title: editingService.title,
+                        description: editingService.description,
+                        icon: editingService.icon,
+                        order_index: editingService.order_index,
+                        active: editingService.active,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', editingService.id);
+                error = updateError;
+            } else {
+                const { error: insertError } = await supabase
+                    .from('services')
+                    .insert([{
+                        title: editingService.title,
+                        description: editingService.description,
+                        icon: editingService.icon,
+                        order_index: editingService.order_index || 0,
+                        active: editingService.active !== undefined ? editingService.active : true
+                    }]);
+                error = insertError;
+            }
 
-            if (response.ok) {
+            if (!error) {
                 setMessage('Serviço salvo com sucesso!');
                 setShowModal(false);
                 setEditingService(null);
                 fetchServices();
             } else {
                 setMessage('Erro ao salvar serviço.');
+                console.error(error);
             }
-        } catch {
+        } catch (e) {
             setMessage('Erro ao salvar serviço.');
+            console.error(e);
         }
         setSaving(false);
     };
@@ -76,15 +106,22 @@ export default function ServicesPage() {
         if (!confirm('Tem certeza que deseja excluir este serviço?')) return;
 
         try {
-            const response = await fetch(`/api/services?id=${id}`, { method: 'DELETE' });
-            if (response.ok) {
+            const supabase = createBrowserClient();
+            const { error } = await supabase
+                .from('services')
+                .delete()
+                .eq('id', id);
+                
+            if (!error) {
                 setMessage('Serviço excluído com sucesso!');
                 fetchServices();
             } else {
                 setMessage('Erro ao excluir serviço.');
+                console.error(error);
             }
-        } catch {
+        } catch (e) {
             setMessage('Erro ao excluir serviço.');
+            console.error(e);
         }
     };
 

@@ -98,18 +98,16 @@ export default function AdminHero() {
                 .from('hero_media')
                 .getPublicUrl(fileName);
 
-            // Create media record via API
-            const res = await fetch('/api/hero', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
+            // Create media record directly
+            const { error: insertError } = await supabase
+                .from('hero_media')
+                .insert([{
                     media_url: urlData.publicUrl,
                     media_type: previewType,
                     is_active: true,
-                }),
-            });
+                }]);
 
-            if (!res.ok) throw new Error('Erro ao salvar mídia Hero');
+            if (insertError) throw insertError;
 
             showMessage('success', 'Mídia enviada e ativada com sucesso!');
             setSelectedFile(null);
@@ -126,13 +124,13 @@ export default function AdminHero() {
 
     const toggleActive = async (id: string, currentActive: boolean) => {
         try {
-            const res = await fetch('/api/hero', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, is_active: !currentActive }),
-            });
+            const supabase = createBrowserClient();
+            const { error } = await supabase
+                .from('hero_media')
+                .update({ is_active: !currentActive })
+                .eq('id', id);
 
-            if (!res.ok) throw new Error('Erro ao atualizar');
+            if (error) throw error;
 
             showMessage('success', !currentActive ? 'Mídia adicionada ao carrossel!' : 'Mídia removida do carrossel!');
             fetchMedia();
@@ -146,8 +144,13 @@ export default function AdminHero() {
         if (!confirm('Tem certeza que deseja excluir esta mídia definitivamente?')) return;
 
         try {
-            const res = await fetch(`/api/hero?id=${id}`, { method: 'DELETE' });
-            if (!res.ok) throw new Error('Erro ao excluir');
+            const supabase = createBrowserClient();
+            const { error } = await supabase
+                .from('hero_media')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
 
             showMessage('success', 'Mídia excluída!');
             fetchMedia();
