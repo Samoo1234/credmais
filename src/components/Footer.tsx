@@ -6,8 +6,21 @@ import { createBrowserClient } from '@/lib/supabase';
 
 const containerStyle = { maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.5rem', paddingRight: '1.5rem', width: '100%' };
 const footerLinks = [
-    { title: 'Links Rápidos', links: [{ label: 'Início', href: '#inicio' }, { label: 'Serviços', href: '#servicos' }, { label: 'Sobre', href: '#sobre' }, { label: 'Contato', href: '#contato' }] },
-    { title: 'Serviços', links: [{ label: 'Consignados', href: '#servicos' }, { label: 'Financiamentos', href: '#servicos' }, { label: 'Seguros', href: '#servicos' }, { label: 'Crédito Empresarial', href: '#servicos' }] },
+    { 
+        title: 'Links Rápidos', 
+        links: [
+            { label: 'Início', href: '#inicio' }, 
+            { label: 'Sobre Nós', href: '#sobre' }, 
+            { label: 'Fale Conosco', href: '#contato' }
+        ] 
+    },
+    { 
+        title: 'Nossas Soluções', 
+        links: [
+            { label: 'Soluções Financeiras', href: '#servicos' }, 
+            { label: 'Assinatura Energia Solar', href: '#energia-solar' }
+        ] 
+    },
 ];
 
 interface SocialLinks {
