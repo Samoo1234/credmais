@@ -38,6 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { href: '/admin/promotions', label: 'Promoções', icon: '📢' },
         { href: '/admin/vehicles', label: 'Cards Veículos', icon: '🚗' },
         { href: '/admin/consorcios', label: 'Cards Consórcios', icon: '🏠' },
+        { href: '/admin/about', label: 'Sobre', icon: 'ℹ️' },
         { href: '/admin/settings', label: 'Configurações', icon: '⚙️' },
     ];
 
