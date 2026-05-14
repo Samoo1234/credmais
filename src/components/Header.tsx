@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '@/assets/logo credmais.png';
@@ -16,6 +16,21 @@ export default function Header() {
     const [consorcioCards, setConsorcioCards] = useState<any[]>([]);
     const [whatsappNumber, setWhatsappNumber] = useState<string>('');
     const [isScrolled, setIsScrolled] = useState(false);
+    const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const handleMouseEnter = (menu: string) => {
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = null;
+        }
+        setActiveDropdown(menu);
+    };
+
+    const handleMouseLeave = () => {
+        closeTimeoutRef.current = setTimeout(() => {
+            setActiveDropdown(null);
+        }, 150);
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -128,12 +143,12 @@ export default function Header() {
                                     key={link.href}
                                     style={{ position: 'relative' }}
                                     onMouseEnter={() => {
-                                        if (link.label === 'Automóveis') setActiveDropdown('automoveis');
-                                        if (link.label === 'Motocicletas') setActiveDropdown('motocicletas');
-                                        if (link.label === 'Consórcios') setActiveDropdown('consorcios');
+                                        if (link.label === 'Automóveis') handleMouseEnter('automoveis');
+                                        if (link.label === 'Motocicletas') handleMouseEnter('motocicletas');
+                                        if (link.label === 'Consórcios') handleMouseEnter('consorcios');
                                     }}
                                     onMouseLeave={() => {
-                                        if (link.label === 'Automóveis' || link.label === 'Motocicletas' || link.label === 'Consórcios') setActiveDropdown(null);
+                                        if (link.label === 'Automóveis' || link.label === 'Motocicletas' || link.label === 'Consórcios') handleMouseLeave();
                                     }}
                                 >
                                     <div style={{ padding: '1.5rem 0', cursor: 'pointer', textAlign: 'center', lineHeight: '1.2' }}>
@@ -178,8 +193,13 @@ export default function Header() {
                     zIndex: -1,
                     pointerEvents: activeDropdown ? 'auto' : 'none'
                 }}
-                onMouseEnter={() => activeDropdown && setActiveDropdown(activeDropdown)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseEnter={() => {
+                    if (closeTimeoutRef.current) {
+                        clearTimeout(closeTimeoutRef.current);
+                        closeTimeoutRef.current = null;
+                    }
+                }}
+                onMouseLeave={handleMouseLeave}
             >
                 {/* Conteúdo do Mega Menu - Automóveis */}
                 <div style={{ 
