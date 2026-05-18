@@ -40,6 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { href: '/admin/consorcios', label: 'Cards Consórcios', icon: '🏠' },
         { href: '/admin/solar-energy', label: 'Energia Solar', icon: '☀️' },
         { href: '/admin/about', label: 'Sobre', icon: 'ℹ️' },
+        { href: '/admin/users', label: 'Usuários', icon: '👤' },
         { href: '/admin/settings', label: 'Configurações', icon: '⚙️' },
     ];
 
