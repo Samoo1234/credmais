@@ -50,3 +50,23 @@ export async function createUserAction(formData: FormData) {
         return { error: 'Erro interno ao processar a solicitação.' };
     }
 }
+
+export async function listUsersAction() {
+    try {
+        const supabaseAdmin = createAdminClient();
+        
+        // Busca a lista de usuários
+        // A API admin.listUsers retorna um array de objetos User em data.users
+        const { data, error } = await supabaseAdmin.auth.admin.listUsers();
+        
+        if (error) {
+            console.error('Erro ao buscar usuários:', error);
+            return { error: error.message };
+        }
+        
+        return { success: true, users: data.users };
+    } catch (err: any) {
+        console.error('Erro interno ao buscar usuários:', err);
+        return { error: 'Erro interno ao buscar usuários.' };
+    }
+}
